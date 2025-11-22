@@ -278,6 +278,69 @@ print(my_dog.speak()) # Output: Rex says Woof!
 print(my_cat.speak()) # Output: Whiskers says Meow!</code></pre></li>
         </ul>
         <hr />
+        <h4 id="bit-manipulation"><strong>1.5. Bit Manipulation</strong></h4>
+        <p><strong>The Concept:</strong> Bit manipulation involves directly working with the individual bits of a number. This can be useful for optimizing performance, especially in competitive programming, or for solving problems that inherently deal with binary representations (e.g., permissions, flags).</p>
+        <p>Python integers handle arbitrary precision, so bitwise operations don't overflow. They operate on the binary representation of the number.</p>
+        <p><strong>Common Bitwise Operators in Python:</strong></p>
+        <ul>
+            <li><code>&amp;</code> (AND): Sets each bit to 1 if both bits are 1.</li>
+            <li><code>|</code> (OR): Sets each bit to 1 if at least one of the bits is 1.</li>
+            <li><code>^</code> (XOR): Sets each bit to 1 if only one of the bits is 1 (exclusive OR).</li>
+            <li><code>~</code> (NOT): Inverts all the bits (bitwise complement).</li>
+            <li><code>&lt;&lt;</code> (Left Shift): Shifts bits to the left, filling with zeros. Equivalent to multiplying by 2 for each shift.</li>
+            <li><code>&gt;&gt;</code> (Right Shift): Shifts bits to the right, filling with sign bit (arithmetic right shift) for negative numbers or zeros for positive numbers. Equivalent to integer division by 2 for each shift.</li>
+        </ul>
+        <h5 id="example-1-check-if-a-number-is-even-or-odd"><strong>Example 1: Check if a Number is Even or Odd</strong></h5>
+        <p><strong>Methodology:</strong> An even number always has its least significant bit (LSB) as 0, while an odd number has its LSB as 1. We can check this using the bitwise AND operator with 1.</p>
+        <pre><code class="language-python">def is_even_odd(n):
+    if (n & 1) == 0:
+        return "Even"
+    else:
+        return "Odd"
+
+# --- Usage Example ---
+print(f"10 is {is_even_odd(10)}") # Output: 10 is Even
+print(f"7 is {is_even_odd(7)}")   # Output: 7 is Odd
+</code></pre>
+        <h5 id="example-2-set-clear-or-toggle-a-specific-bit"><strong>Example 2: Set, Clear, or Toggle a Specific Bit</strong></h5>
+        <p><strong>Problem:</strong> Given a number and a bit position (0-indexed), perform operations on that bit.</p>
+        <pre><code class="language-python">def set_bit(num, pos):
+    # Set the bit at 'pos' to 1. Create a mask with 1 at 'pos' and OR it.
+    return num | (1 << pos)
+
+def clear_bit(num, pos):
+    # Clear the bit at 'pos' to 0. Create a mask with 0 at 'pos' and AND it.
+    return num & (~(1 << pos))
+
+def toggle_bit(num, pos):
+    # Toggle the bit at 'pos'. Create a mask with 1 at 'pos' and XOR it.
+    return num ^ (1 << pos)
+
+def get_bit(num, pos):
+    # Get the value of the bit at 'pos'.
+    return (num >> pos) & 1
+
+# --- Usage Example ---
+n = 10 # Binary: 1010
+print(f"Original number: {n} (binary: {bin(n)})")
+
+# Set bit at position 0 (LSB)
+n_set = set_bit(n, 0) # 1010 | 0001 = 1011 (11)
+print(f"Set bit 0: {n_set} (binary: {bin(n_set)})")
+
+# Clear bit at position 1
+n_clear = clear_bit(n, 1) # 1010 & ~(0010) = 1010 & 1101 = 1000 (8)
+print(f"Clear bit 1: {n_clear} (binary: {bin(n_clear)})")
+
+# Toggle bit at position 2
+n_toggle = toggle_bit(n, 2) # 1010 ^ 0100 = 1110 (14)
+print(f"Toggle bit 2: {n_toggle} (binary: {bin(n_toggle)})")
+
+# Get bit at position 3
+bit_val = get_bit(n, 3) # (1010 >> 3) & 1 = 0001 & 1 = 1
+print(f"Get bit 3: {bit_val}")
+</code></pre>
+        <hr />
         <h3 id="part-2-algorithms-and-complexity"><strong>Part 2: Algorithms &amp; Complexity</strong></h3>
         <h4 id="big-o-notation"><strong>2.1. Big O Notation</strong></h4>
         <p><strong>The Problem:</strong> How do we measure the efficiency of an algorithm? We can’t just time it, because the result depends on the computer’s speed and the size of the input. We need a standardized way to describe how the runtime or space requirements of an algorithm grow as the input size (n) grows.</p>
@@ -1033,10 +1096,121 @@ print(f"Queue after dequeue: {my_queue}")
             <li><strong>Concept:</strong> A queue implemented with a fixed-size array where the <code>front</code> and <code>rear</code> pointers move in a circular fashion. When the <code>rear</code> reaches the end of the array, it wraps around to the beginning if there's space.</li>
             <li><strong>Benefits:</strong> Efficient use of memory (no shifting elements), fixed capacity. Useful in systems with limited memory or when you need a fixed-size buffer, like in operating systems or network protocols.</li>
         </ul>
-        <h3 id="part-5-non-linear-data-structures"><strong>Part 5: Non-Linear Data Structures</strong></h3>
-        <h4 id="trees"><strong>5.1. Trees</strong></h4>
+        <h3 id="part-5-algorithmic-techniques"><strong>Part 5: Algorithmic Techniques</strong></h3>
+        <h4 id="two-pointers"><strong>5.1. Two Pointers</strong></h4>
+        <p><strong>The Concept:</strong> The two-pointer technique is a common algorithmic pattern that involves using two pointers (usually indices) to iterate through a data structure, typically an array or a list. These pointers can move in the same direction, opposite directions, or at different speeds, depending on the problem.</p>
+        <p><strong>Use Cases:</strong></p>
+        <ul>
+            <li>Searching for pairs in a sorted array (e.g., two sum problem).</li>
+            <li>Reversing an array or string in-place.</li>
+            <li>Removing duplicates from a sorted array.</li>
+            <li>Finding the middle of a linked list.</li>
+            <li>Checking for palindromes.</li>
+        </ul>
+        <h5 id="example-1-finding-a-pair-with-a-given-sum-in-a-sorted-array"><strong>Example 1: Finding a Pair with a Given Sum in a Sorted Array</strong></h5>
+        <p><strong>Problem:</strong> Given a sorted array of integers and a target sum, find if there exists a pair of elements in the array that sums up to the target.</p>
+        <pre><code class="language-python">def find_pair_sum(arr, target_sum):
+    # Initialize two pointers: one at the beginning and one at the end.
+    left = 0
+    right = len(arr) - 1
+
+    while left < right:
+        current_sum = arr[left] + arr[right]
+
+        if current_sum == target_sum:
+            print(f"Pair found: ({arr[left]}, {arr[right]})")
+            return True
+        elif current_sum < target_sum:
+            # If the current sum is too small, move the left pointer to increase the sum.
+            left += 1
+        else:
+            # If the current sum is too large, move the right pointer to decrease the sum.
+            right -= 1
+    
+    print("No pair found.")
+    return False
+
+# --- Usage Example ---
+sorted_array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+find_pair_sum(sorted_array, 10) # Output: Pair found: (1, 9)
+find_pair_sum(sorted_array, 15) # Output: Pair found: (6, 9)
+find_pair_sum(sorted_array, 20) # Output: No pair found.
+</code></pre>
+        <h5 id="example-2-reversing-an-array-in-place"><strong>Example 2: Reversing an Array In-Place</strong></h5>
+        <p><strong>Problem:</strong> Reverse the elements of an array without using extra space.</p>
+        <pre><code class="language-python">def reverse_array(arr):
+    left = 0
+    right = len(arr) - 1
+
+    while left < right:
+        # Swap elements at the left and right pointers.
+        arr[left], arr[right] = arr[right], arr[left]
+        # Move pointers towards the center.
+        left += 1
+        right -= 1
+    return arr
+
+# --- Usage Example ---
+my_array = [1, 2, 3, 4, 5]
+print(f"Original array: {my_array}")
+reversed_array = reverse_array(my_array)
+print(f"Reversed array: {reversed_array}") # Output: [5, 4, 3, 2, 1]
+</code></pre>
+        <hr />
+        <h4 id="sliding-window"><strong>5.2. Sliding Window</strong></h4>
+        <p><strong>The Concept:</strong> The sliding window technique is used to perform operations on a specific window (or subarray/substring) of a given size within a larger data structure like an array or string. The window "slides" over the data, either by a fixed step or by dynamically adjusting its size.</p>
+        <p><strong>Use Cases:</strong></p>
+        <ul>
+            <li>Finding the maximum/minimum sum subarray of a fixed size.</li>
+            <li>Finding the longest substring with K distinct characters.</li>
+            <li>Finding the smallest subarray with a given sum.</li>
+            <li>Problems involving contiguous subarrays/substrings.</li>
+        </ul>
+        <h5 id="example-1-maximum-sum-subarray-of-size-k"><strong>Example 1: Maximum Sum Subarray of Size K</strong></h5>
+        <p><strong>Problem:</strong> Given an array of positive numbers and a positive integer <code>k</code>, find the maximum sum of any contiguous subarray of size <code>k</code>.</p>
+        <pre><code class="language-python">def max_sum_subarray_fixed_size(arr, k):
+    if k > len(arr):
+        return -1 # Or raise an error, or handle as appropriate
+
+    window_sum = 0
+    max_sum = 0
+    window_start = 0
+
+    # Calculate the sum of the first window.
+    for i in range(k):
+        window_sum += arr[i]
+    
+    max_sum = window_sum
+
+    # Slide the window across the array.
+    for window_end in range(k, len(arr)):
+        # Add the new element to the window.
+        window_sum += arr[window_end]
+        # Subtract the element going out of the window.
+        window_sum -= arr[window_start]
+        # Move the window start forward.
+        window_start += 1
+        
+        # Update max_sum if current window_sum is greater.
+        max_sum = max(max_sum, window_sum)
+    
+    return max_sum
+
+# --- Usage Example ---
+my_array = [2, 1, 5, 1, 3, 2]
+k = 3
+print(f"Maximum sum subarray of size {k}: {max_sum_subarray_fixed_size(my_array, k)}") # Output: 9 (from [5, 1, 3])
+
+my_array_2 = [2, 3, 4, 1, 5]
+k_2 = 2
+print(f"Maximum sum subarray of size {k_2}: {max_sum_subarray_fixed_size(my_array_2, k_2)}") # Output: 7 (from [3, 4])
+</code></pre>
+        <hr />
+        <p>Non-linear data structures do not arrange data elements sequentially. Instead, they organize data in a hierarchical or network-like fashion, allowing for more complex relationships between elements.</p>
+        <hr />
+        <h4 id="trees"><strong>4.1. Trees</strong></h4>
         <p><strong>The Concept:</strong> A data structure consisting of nodes connected by edges, representing hierarchical data.</p>
-        <h5 id="binary-search-trees-bst"><strong>5.1.1. Binary Search Trees (BST)</strong></h5>
+        <h5 id="binary-search-trees-bst"><strong>4.1.1. Binary Search Trees (BST)</strong></h5>
         <p>A binary tree where for any given node, all values in its <strong>left</strong> subtree are <strong>less than</strong> the node's value, and all values in its <strong>right</strong> subtree are <strong>greater than</strong> the node's value. This allows for O(log n) search, insert, and delete on average.</p>
         <p><strong>Practical Implementation:</strong></p>
         <pre><code class="language-python">class Node:
@@ -1163,7 +1337,7 @@ bst.delete(70) # Delete a node with two children
 print(f"Is 20 in the tree after deletion? {bst.search(20)}") # False
 print(f"Is 70 in the tree after deletion? {bst.search(70)}") # False
 </code></pre>
-        <h5 id="tree-traversal-methods"><strong>5.1.2. Tree Traversal Methods</strong></h5>
+        <h5 id="tree-traversal-methods"><strong>4.1.2. Tree Traversal Methods</strong></h5>
         <p><strong>The Problem:</strong> How do you visit and process every node in a tree in a systematic order? There are two main approaches: Depth-First Search (DFS) and Breadth-First Search (BFS).</p>
         <h6>Depth-First Search (DFS)</h6>
         <p>DFS goes as deep as possible down one branch before exploring others. It's often implemented using recursion, which naturally uses a stack (the call stack).</p>
@@ -1278,7 +1452,8 @@ def level_order_traversal(root):
 </code></pre>
             </li>
         </ul>
-        <h4 id="heaps"><strong>5.3. Heaps</strong></h4>
+        <hr />
+        <h4 id="heaps"><strong>4.2. Heaps</strong></h4>
         <p><strong>The Problem:</strong> You need a data structure to quickly find the minimum or maximum element in a collection. This is common in "priority queues," where you need to process the highest-priority item first (e.g., an ER waiting room).</p>
         <p><strong>The Concept:</strong> A Heap is a special tree-based data structure that satisfies the <strong>Heap Property</strong>. It's typically implemented as a list or array but visualized as a tree.</p>
         <ul>
@@ -1408,7 +1583,7 @@ print(f"Heap from scratch: {heap.heap}")
 print(f"Extracted min: {heap.extract_min()}")
 print(f"Heap after extraction: {heap.heap}")
 </code></pre>
-        <h5 id="heapsort"><strong>5.3.1. Application: Heapsort</strong></h5>
+        <h5 id="heapsort"><strong>4.2.1. Application: Heapsort</strong></h5>
         <ul>
             <li><strong>Methodology:</strong> A clever sorting algorithm using a heap.
                 <ol>
@@ -1420,7 +1595,8 @@ print(f"Heap after extraction: {heap.heap}")
             </li>
             <li><strong>Analysis:</strong> Time: <strong>O(n log n)</strong>. Space: O(1) (in-place).</li>
         </ul>
-        <h4 id="hashing"><strong>5.4. Hashing</strong></h4>
+        <hr />
+        <h4 id="hashing"><strong>4.3. Hashing</strong></h4>
         <p><strong>The Problem:</strong> We need lookups to be even faster than a BST's O(log n). Can we achieve O(1) average time for search, insert, and delete?</p>
         <p><strong>The Concept:</strong> Hashing is the core idea behind Python's <strong>dictionaries (<code>dict</code>) and sets (<code>set</code>)</strong>. It works in two steps:</p>
         <ol>
@@ -1469,8 +1645,8 @@ if "email" in user_profile:
 # It hashes "age" to find the item and remove it.
 del user_profile["age"]
 print(f"After deleting age: {user_profile}")
-</code></pre>
-        <h4 id="graphs"><strong>5.5. Graphs</strong></h4>
+```</pre>
+        <h4 id="graphs"><strong>4.4. Graphs</strong></h4>
         <p><strong>The Problem:</strong> How do you represent data with complex, many-to-many relationships? Think of a social network (users are connected to many friends), a road map (cities are connected by roads), or the internet (web pages are connected by links).</p>
         <p><strong>The Concept:</strong> A Graph consists of:</p>
         <ul>
@@ -1479,7 +1655,7 @@ print(f"After deleting age: {user_profile}")
             <li><strong>Directed vs. Undirected:</strong> In a social network, friendship is usually mutual (undirected). On Twitter, following is one-way (directed).</li>
             <li><strong>Weighted vs. Unweighted:</strong> On a road map, edges have weights (the distance). On a simple social network, an edge might be unweighted (you're either friends or not).</li>
         </ul>
-        <h5 id="graph-representation"><strong>5.5.1. Graph Representation</strong></h5>
+        <h5 id="graph-representation"><strong>4.4.1. Graph Representation</strong></h5>
         <p><strong>Adjacency List (most common):</strong></p>
         <ul>
             <li><strong>Methodology:</strong> A dictionary where each key is a vertex, and its value is a list of the vertices it's connected to. Excellent for sparse graphs (graphs with relatively few edges).</li>
@@ -1502,7 +1678,7 @@ print(f"Adjacency List for the graph:\n{social_network}")
         <ul>
             <li><strong>Methodology:</strong> An N x N matrix (where N is the number of vertices) where <code>matrix[i][j] = 1</code> if there's an edge from vertex <code>i</code> to <code>j</code>, and 0 otherwise. Good for dense graphs (many connections) but wastes a lot of space for sparse graphs.</li>
         </ul>
-        <h5 id="graph-traversal"><strong>5.5.2. Graph Traversal</strong></h5>
+        <h5 id="graph-traversal"><strong>4.4.2. Graph Traversal</strong></h5>
         <p>How do you visit every vertex in a graph systematically, starting from a given vertex?</p>
         <h6>Breadth-First Search (BFS)</h6>
         <ul>
@@ -1573,8 +1749,9 @@ def bfs(graph, start_node):
 </code></pre>
             </li>
         </ul>
-        <h3 id="part-6-advanced-topics"><strong>Part 6: Advanced Topics</strong></h3>
-        <h4 id="disjoint-sets-union-find-data-structure"><strong>6.1. Disjoint Sets (Union-Find)</strong></h4>
+
+        <h3 id="part-7-advanced-topics"><strong>Part 7: Advanced Topics</strong></h3>
+        <h4 id="disjoint-sets-union-find-data-structure"><strong>7.1. Disjoint Sets (Union-Find)</strong></h4>
         <p><strong>The Problem:</strong> Imagine you have a collection of elements, and you need to efficiently determine if two elements belong to the same group (or "set") and to merge two groups together. This is common in problems like finding connected components in a graph or in Kruskal's algorithm for Minimum Spanning Trees.</p>
         <p><strong>The Concept:</strong> A Disjoint Set Union (DSU) data structure manages a collection of elements partitioned into a number of disjoint (non-overlapping) sets. It supports two primary operations:</p>
         <ul>
@@ -1630,7 +1807,7 @@ def bfs(graph, start_node):
                 # Increment the rank of the new root tree.
                 self.rank[root_i] += 1
 </code></pre>
-        <h4 id="greedy-algorithms"><strong>6.2. Greedy Algorithms</strong></h4>
+        <h4 id="greedy-algorithms"><strong>7.2. Greedy Algorithms</strong></h4>
         <p><strong>The Concept:</strong> A greedy algorithm makes the <strong>locally optimal choice at each step</strong> with the hope that this choice will lead to a <strong>globally optimal solution</strong>. It doesn't look ahead; it just picks the best option available right now.</p>
         <p><strong>Example: Activity Selection Problem</strong></p>
         <pre><code class="language-python">def activity_selection(activities):
@@ -1677,7 +1854,7 @@ my_activities = [(1, 4), (3, 5), (0, 6), (5, 7), (8, 11), (12, 14)]
 result = activity_selection(my_activities)
 print(f"Selected activities: {result}") # Output: [(1, 4), (5, 7), (8, 11), (12, 14)]
 </code></pre>
-        <h4 id="dynamic-programming"><strong>6.3. Dynamic Programming</strong></h4>
+        <h4 id="dynamic-programming"><strong>7.3. Dynamic Programming</strong></h4>
         <p><strong>The Concept:</strong> DP is an optimization technique that solves complex problems by breaking them down into simpler, <strong>overlapping subproblems</strong>. It stores the results of these subproblems to avoid recomputing them.</p>
         <p><strong>Example: Fibonacci Sequence</strong></p>
         <h6>1. Naive Recursive Solution (Inefficient)</h6>
